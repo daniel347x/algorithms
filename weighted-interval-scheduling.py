@@ -60,7 +60,21 @@ def schedule_weighted_intervals(I):
     def compute_solution(j):
         if j >= 0:  # will halt on OPT[-1]
             if I[j].weight + OPT[p[j]] > OPT[j - 1]:
+            	
+            		''' If I'm correct (from a migration of this code to C++),
+            		    the following line of code is incorrect.
+            		    Suppose that p[j] points "pretty far back";
+            		    i.e., that p[j] < j-1 and that the j-1 element
+            		    had been appended to O.
+            		    In this case, we need to REMOVE the j-1 element from O
+            		    (others prior to j-1 might also need to be removed as well)
+            		    before appending the current element.
+            		    
+            		    Let me know if what I'm saying seems right!
+            		    Perhaps I am misunderstanding something. - Dan Nissenbaum
+            		'''
                 O.append(I[j])
+
                 compute_solution(p[j])
             else:
                 compute_solution(j - 1)
